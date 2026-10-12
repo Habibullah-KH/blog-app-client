@@ -160,7 +160,7 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <ModeToggle />
             <Button
               variant="outline"

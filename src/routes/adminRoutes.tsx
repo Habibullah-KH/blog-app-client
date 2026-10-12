@@ -7,6 +7,14 @@ export const adminRoutes: Route[] = [{
           title: "Analytics",
           url: "/analytics",
         },
+        {
+          title: "Analytics",
+          url: "/analytics",
+        },
+        {
+          title: "Analytics",
+          url: "/analytics",
+        },
       ],
 
 }]
