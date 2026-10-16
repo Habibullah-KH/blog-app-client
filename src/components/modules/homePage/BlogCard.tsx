@@ -104,7 +104,6 @@ export default function BlogCard({ post }: { post?: BlogPost | null }) {
             By {post.authorId?.slice(0, 6)}...
           </span>
           <Button 
-            asChild
             variant="ghost"
             size="sm"
             className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 group/btn"

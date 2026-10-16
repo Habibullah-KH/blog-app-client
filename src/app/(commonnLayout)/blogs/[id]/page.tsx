@@ -2,6 +2,16 @@ import Image from "next/image";
 import { Calendar, Eye, MessageSquare, Tag, User, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { blogService } from "@/services/blog.service";
+import { BlogPost } from "@/TYPES";
+
+//* ai jinish ta return korbe kyend of [{id: asdfasdf}, {id: asdkfjai}, {id: oijk;lkjklj}]
+
+
+export async function generateStaticParams(){
+  const {data} = await blogService.getBlogPost();
+
+  return data?.data?.data?.map((blog : BlogPost) => ({id: blog.id})).splice(0.3);
+}
 
 export default async function BlogPage({
   params,
