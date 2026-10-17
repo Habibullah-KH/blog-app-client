@@ -9,11 +9,43 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { env } from "@/env";
+import { cookies } from "next/headers";
+
+const API_URL = env.API_URL;
 
 export default function CreateBlogFormServer() {
   const createBlog = async (formData: FormData) => {
     "use server";
-    console.log(formData.delete("title"));
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const tags = formData.get("tags") as string;
+
+    const blogData = {
+      title,
+      content,
+      tags: tags
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item !== " "),
+    };
+
+    console.log(blogData);
+    // console.log(JSON.stringify(blogData));
+
+    const cookieStore = cookies;
+
+    const res = fetch(`${API_URL}/posts`, {
+      method: "POST",
+      headers: {
+        "content-type": "appliction/json",
+        Cookie: cookieStore.toString(),
+      },
+      body: JSON.stringify(blogData)
+    });
+
+    console.log(res);
   };
 
   return (
@@ -26,16 +58,32 @@ export default function CreateBlogFormServer() {
         <form id="blog-form" action={createBlog}>
           <FieldGroup>
             <Field>
-              <FieldLabel>Title</FieldLabel>
-              <Input type="text" name="title" />
+              <FieldLabel htmlFor="title">Title</FieldLabel>
+              <Input
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Blog title"
+                required
+              />
             </Field>
             <Field>
-              <FieldLabel>Contend</FieldLabel>
-              <Input type="text" name="title" />
+              <FieldLabel htmlFor="content">Content</FieldLabel>
+              <Textarea
+                id="content"
+                name="content"
+                placeholder="Write you blog"
+                required
+              />
             </Field>
             <Field>
-              <FieldLabel>Tags</FieldLabel>
-              <Input type="text" name="title" />
+              <FieldLabel htmlFor="tags">Tags</FieldLabel>
+              <Input
+                id="tags"
+                type="text"
+                name="tags"
+                placeholder="tag1, tag2"
+              />
             </Field>
           </FieldGroup>
         </form>
