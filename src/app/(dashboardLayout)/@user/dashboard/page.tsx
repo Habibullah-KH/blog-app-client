@@ -1,5 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function Dashboard() {
-  return (
-    <div>User dashboard</div>
-  )
+  return redirect("/dashboard/create-blog");
 }
