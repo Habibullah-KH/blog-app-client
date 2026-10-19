@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { env } from "@/env";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+// import { toast } from "sonner";
 
 const API_URL = env.API_URL;
 
@@ -34,18 +36,26 @@ export default function CreateBlogFormServer() {
     console.log(blogData);
     // console.log(JSON.stringify(blogData));
 
-    const cookieStore = cookies;
+    const cookieStore = await cookies();
 
-    const res = fetch(`${API_URL}/posts`, {
+    const res = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
-        "content-type": "appliction/json",
+        "content-type": "application/json",
         Cookie: cookieStore.toString(),
       },
-      body: JSON.stringify(blogData)
+      body: JSON.stringify(blogData),
     });
 
     console.log(res);
+
+    //* amra akhan a kono client component use korte parbo na karon server action muloto serverr a run hoy so client er kisu use kora possible na
+    // toast("post created")
+
+    //*amra chaile redirect korte pari like this way
+    // if (res.status) {
+    //   redirect("/dashboard/create-blog?success");
+    // }
   };
 
   return (

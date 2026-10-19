@@ -3,8 +3,7 @@ import { userService } from "./services/user.service";
 import { Roles } from "./constants/roles";
 
 export async function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-  console.log(pathname);
+  const {pathname, search} = request.nextUrl;
   const { data } = await userService.getSession();
 
   let isAuthenticated = false;
@@ -16,6 +15,8 @@ export async function proxy(request: NextRequest) {
   }
 
   if (!isAuthenticated) {
+    const loginUrl = new URL("/login", request.url)
+    loginUrl.searchParams.set("redirect", pathname + search);
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

@@ -17,8 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useForm } from "@tanstack/react-form";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
+
+function getSafeRedirect(path: string | null) {
+  if (path && path.startsWith("/") && !path.startsWith("//")) return path;
+  return "/";
+}
 
 const formSchema = z.object({
   password: z.string().min(8, "minimum length is 8"),
@@ -26,12 +32,14 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = getSafeRedirect(searchParams.get("redirect"));
   const handleGoogleLogin = async () => {
     const data = authClient.signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:3000",
+      callbackURL: redirectTo,
     });
-    console.log(data)
   };
 
   const form = useForm({
@@ -43,7 +51,6 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("click");
       const toastId = toast.loading("Logging user");
       try {
         const { data, error } = await authClient.signIn.email(value);
@@ -54,10 +61,13 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         }
 
         toast.success("user Logging successfully", { id: toastId });
+        router.push(redirectTo);
+        router.refresh();
       } catch (err) {
         toast.error("Internal server error :(, please try again", {
           id: toastId,
         });
+        console.log(err);
       }
     },
   });
@@ -78,7 +88,6 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           }}
         >
           <FieldGroup>
-
             <form.Field
               name="email"
               children={(field) => {
