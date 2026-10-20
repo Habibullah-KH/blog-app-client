@@ -1,4 +1,6 @@
 import { env } from "@/env";
+import { BlogData } from "@/TYPES";
+import { cookies } from "next/headers";
 
 interface GetBlogsParams {
   isFeatured?: boolean;
@@ -39,10 +41,18 @@ export const blogService = {
         config.next = { revalidate: options.revalidate };
       }
 
-      // url.searchParams.append("key", "value");
-      console.log(url.toString());
-
+      config.next = { ...config.next, tags: ["blogPosts"] };
       const res = await fetch(url.toString(), config);
+
+      //* reference hishabe aita rakhci tags ta next er vitor onno objext diyaw rakha jay
+
+      // const res = await fetch(url.toString(), {
+      //   next: {
+      //     tags: ["blogPosts"],
+      //   },
+      // });
+
+      // url.searchParams.append("key", "value");
 
       //* SSR
       // const res = await fetch(`${API_URL}/posts`, {cache: "no-store"});
@@ -55,14 +65,38 @@ export const blogService = {
   },
 
   getBlogById: async function (id: string) {
-    try{
+    try {
       const res = await fetch(`${API_URL}/posts/${id}`);
       const data = await res.json();
 
-      return {data: data, error: null};
+      return { data: data, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "somthing went wrong" } };
     }
-    catch(err){
-      return {data: null, error: {message: "somthing went wrong"}};
+  },
+
+  createBlogPost: async (blogData: BlogData) => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/posts`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify(blogData),
+      });
+
+      const data = await res.json()
+
+      if(data.error){
+        return {data: null, error: {message: data.error || "Post not created"}}
+      }
+
+      return {data: data, error: null}
+    } catch (error) {
+      return { data: null, error: { message: "somthing went wrong" } };
     }
-  }
+  },
 };

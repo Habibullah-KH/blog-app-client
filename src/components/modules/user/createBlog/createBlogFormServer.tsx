@@ -11,8 +11,9 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { env } from "@/env";
+import { revalidateTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 // import { toast } from "sonner";
 
 const API_URL = env.API_URL;
@@ -33,7 +34,6 @@ export default function CreateBlogFormServer() {
         .filter((item) => item !== " "),
     };
 
-    console.log(blogData);
     // console.log(JSON.stringify(blogData));
 
     const cookieStore = await cookies();
@@ -47,7 +47,10 @@ export default function CreateBlogFormServer() {
       body: JSON.stringify(blogData),
     });
 
-    console.log(res);
+    if(res.ok){
+      revalidateTag("blogPosts", "max");
+      // updateTag("blogPosts"); //* use either one of them
+    }
 
     //* amra akhan a kono client component use korte parbo na karon server action muloto serverr a run hoy so client er kisu use kora possible na
     // toast("post created")
