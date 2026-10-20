@@ -91,7 +91,7 @@ export const blogService = {
       const data = await res.json()
 
       if(data.error){
-        return {data: null, error: {message: data.error || "Post not created"}}
+        return {data: null, error: {message: "Post not created"}}
       }
 
       return {data: data, error: null}

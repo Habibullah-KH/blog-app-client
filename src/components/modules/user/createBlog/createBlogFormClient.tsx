@@ -51,12 +51,24 @@ export default function CreateBlogFormClient() {
           .split(",")
           .map((item) => item.trim())
           .filter((item) => item !== ""),
-      };
 
+        // title: value.title,
+        // content: value.content,
+        // tags: value.tags
+        //   .split(",")
+        //   .map((item) => item.trim())
+        //   .filter((item) => item != ""),
+      };
       console.log(blogData);
       try {
         const res = await createBlogPost(blogData);
-        console.log(res);
+        if (res.error) {
+          toast.error(res.error.message, {
+            id: toastId,
+          });
+
+          return;
+        }
         toast.success("user created successfully", { id: toastId });
       } catch (err) {
         toast.error("Internal server error :(, please try again", {
@@ -68,10 +80,8 @@ export default function CreateBlogFormClient() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Enter your information below to create your account
-        </CardDescription>
+        <CardTitle>create blog post "clienta action"</CardTitle>
+        <CardDescription>fill the form and submit</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -115,7 +125,7 @@ export default function CreateBlogFormClient() {
                   <Field>
                     <FieldLabel htmlFor={field.name}>content</FieldLabel>
                     <Input
-                      type="email"
+                      type="text"
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
