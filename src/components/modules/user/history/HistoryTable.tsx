@@ -7,27 +7,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { BlogPost } from "@/TYPES";
 
-export default function HistoryTable() {
+export default function HistoryTable({ posts }: { posts: BlogPost[] }) {
   return (
-    <div>
+    <div className="border rounded-2xl p-2">
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Tags</TableHead>
+            <TableHead>View</TableHead>
+            <TableHead>Comment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
+
+          {posts.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell>{item.title}</TableCell>
+              <TableCell>{item.tags}</TableCell>
+              <TableCell>{item.views}</TableCell>
+              <TableCell>{item.isFeatured}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
