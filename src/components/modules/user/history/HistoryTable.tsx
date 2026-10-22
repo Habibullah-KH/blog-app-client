@@ -13,7 +13,7 @@ export default function HistoryTable({ posts }: { posts: BlogPost[] }) {
   return (
     <div className="border rounded-2xl p-2">
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
