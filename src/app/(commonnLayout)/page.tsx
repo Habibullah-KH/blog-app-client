@@ -45,9 +45,10 @@ export default async function Home() {
     <div>
       <div className="mx-auto m-4 relative w-full h-96 mb-6">
         <Image
-          src={rtxSpark}
-          alt="hero"
+          src="https://www.bentleymotors.com/content/dam/bm/websites/bmcom/bentleymotors-com/about-bentley/motorsports-/GT3%20motorsport.jpg/_jcr_content/renditions/original.image_file.976.549.file/GT3%20motorsport.jpg"
           fill
+          priority
+          alt="hero"
           className="rounded-2xl object-cover"
         />
         {/* <Image
