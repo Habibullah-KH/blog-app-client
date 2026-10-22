@@ -6,6 +6,7 @@ interface GetBlogsParams {
   isFeatured?: boolean;
   search?: string;
   page?: string;
+  limit?: number;
 }
 
 interface ServiceOptions {
@@ -18,6 +19,8 @@ const API_URL = env.API_URL;
 export const blogService = {
   getBlogPost: async function (
     params?: GetBlogsParams,
+    isFeatured?: GetBlogsParams,
+    limit?: GetBlogsParams,
     options?: ServiceOptions,
   ) {
     try {
@@ -26,6 +29,22 @@ export const blogService = {
 
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
+          if (value != undefined && value != null && value != "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
+
+      if (isFeatured) {
+        Object.entries(isFeatured).forEach(([key, value]) => {
+          if (value != undefined && value != null && value != "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
+
+      if (limit) {
+        Object.entries(limit).forEach(([key, value]) => {
           if (value != undefined && value != null && value != "") {
             url.searchParams.append(key, value);
           }

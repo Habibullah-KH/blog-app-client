@@ -23,7 +23,6 @@ interface PaginationControllsProps {
 import { RxCircleBackslash, RxPinLeft } from "react-icons/rx";
 export default function PaginationControls({ meta }: PaginationControllsProps) {
   const { limit: pageSize, page: currentPage, total, totalPage } = meta;
-  console.log({ pageSize, currentPage, total, totalPage });
   const searchParams = useSearchParams();
   const router = useRouter();
   const navigateToPage = (page: number) => {

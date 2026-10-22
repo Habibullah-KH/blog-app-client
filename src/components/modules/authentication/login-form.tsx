@@ -67,7 +67,6 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         toast.error("Internal server error :(, please try again", {
           id: toastId,
         });
-        console.log(err);
       }
     },
   });

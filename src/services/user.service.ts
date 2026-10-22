@@ -26,7 +26,6 @@ export const userService = {
 
       return { data: session, error: null };
     } catch (er) {
-      console.log("error :", er);
       return { data: null, error: er };
     }
   },
